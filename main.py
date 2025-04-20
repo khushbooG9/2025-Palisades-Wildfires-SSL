@@ -12,7 +12,7 @@ import transformers
 
 from transformers import AutoConfig, AutoModelForSequenceClassification, AutoTokenizer
 from custom_dataset import Dataset_tracked
-from train import train_model_supervised, train_model_self_training
+from train import train_model_supervised, train_model_self_training, train_model_mixmatch, train_model_ust
 
 
 # logging
@@ -69,8 +69,8 @@ if __name__ == '__main__':
     parser.add_argument("--sample_scheme", nargs="?", default="easy_bald_class_conf", help="Sampling scheme to use")
     parser.add_argument("--T", nargs="?", type=int, default=7, help="number of masked models for uncertainty estimation")
     parser.add_argument("--alpha", nargs="?", type=float, default=0.1, help="hyper-parameter for confident training loss")
-    parser.add_argument("--sup_epochs", nargs="?", type=int, default=12, help="number of epochs for fine-tuning base model")
-    parser.add_argument("--unsup_epochs", nargs="?", type=int, default=18, help="number of self-training iterations")
+    parser.add_argument("--sup_epochs", nargs="?", type=int, default=18, help="number of epochs for fine-tuning base model")
+    parser.add_argument("--unsup_epochs", nargs="?", type=int, default=12, help="number of self-training iterations")
     parser.add_argument("--N_base", nargs="?", type=int, default=3, help="number of times to randomly initialize and fine-tune few-shot base encoder to select the best starting configuration")
     parser.add_argument("--pt_teacher_checkpoint", nargs="?", default="vinai/bertweet-base", help="teacher model checkpoint to load pre-trained weights")
     parser.add_argument("--results_file", nargs="?", default="result.txt", help="file name")
@@ -79,8 +79,6 @@ if __name__ == '__main__':
     parser.add_argument("--dense_dropout", nargs="?", type=float, default=0.5, help="dropout probability for final layers of teacher model")
     parser.add_argument("--temp_scaling", nargs="?", type=bool, default=True, help="temp scaling" )
     parser.add_argument("--saliency", nargs="?", type=bool, default=True, help="saliency")
-    # parser.add_argument("--wo_similar", nargs="?", type=bool, default=False, help="without similar")
-    # parser.add_argument("--wo_dissimilar", nargs="?", type=bool, default=False, help="without dissimilar")
 
     args = vars(parser.parse_args())
     logger.info(args)
@@ -127,4 +125,15 @@ if __name__ == '__main__':
     elif args["method_type"] == "self_training":
         train_model_self_training(history_train, history_dev, history_test, palisades_test, palisades_unlabeled,pt_teacher_checkpoint, 
                                   cfg, unsup_epochs=unsup_epochs, sup_batch_size=sup_batch_size, sup_epochs=sup_epochs, 
-                                  N_base=N_base, results_file=results_file_name, temp_scaling=temp_scaling, method_type=args["method_type"]) 
+                                  N_base=N_base, results_file=results_file_name, temp_scaling=temp_scaling, method_type=args["method_type"])
+
+    elif args["method_type"] == "mixmatch":
+         train_model_mixmatch(history_train, history_dev, history_test, palisades_test, palisades_unlabeled,pt_teacher_checkpoint, 
+                                  cfg, unsup_epochs=unsup_epochs, sup_batch_size=sup_batch_size, sup_epochs=sup_epochs, 
+                                  N_base=N_base, results_file=results_file_name, temp_scaling=temp_scaling, method_type=args["method_type"])
+         
+    elif args["method_type"] == "ust":
+        train_model_ust(history_train, history_dev, history_test, palisades_test, palisades_unlabeled,pt_teacher_checkpoint, 
+                                  cfg, unsup_epochs=unsup_epochs, T=30, alpha=0.1, dense_dropout=0.5, 
+                                  sup_batch_size=sup_batch_size, sup_epochs=sup_epochs, 
+                                  N_base=N_base, results_file=results_file_name, temp_scaling=temp_scaling, method_type=args["method_type"])
