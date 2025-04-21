@@ -1,1 +1,4 @@
-all data for exp
+This folder contains all the data needed to run the experiments. More details - 
+ - Included 2 files containing originally collected data about Palisades Wildfires 2025 from Jan 7th 2025 to Apr 6th 2025. palisades_raw_mannual.xlsx has data which was manually collected abd palisades_raw_scraped.csv has data from two different kinds of scraping attemps. 
+ - After some preprocessing of the raw data, ended up with ~2500 tweets which was split into ~2300 and ~160 sized unlabeled and test (manually annotated by me) data for Palisades Wildfires 2025 i.e. palisades_unlabeled.tsv and palisades_test.tsv respectively. 
+ - The train, dev, and test files for historical data are combined from the 2016 Canada Wildfires and 2018 California Wildfires of the Humaid dataset (https://crisisnlp.qcri.org/humaid_dataset). 
