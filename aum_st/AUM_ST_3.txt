@@ -1,0 +1,15 @@
+{
+    "Temperature Scaling": true,
+    "Best  model": {
+        "F1 Historic before temp scaling": "0.6863936732016691",
+        "ECE Historic before temp scaling": "tensor(0.1770, device='cuda:0')",
+        "F1 Palisades before temp scaling": "0.501250983964869",
+        "ECE Palisades before temp scaling": "tensor(0.3792, device='cuda:0')",
+        "T before temp scaling": "1.0",
+        "F1 Historic after temp scaling": "0.6863936732016691",
+        "ECE Historic after temp scaling": "tensor(0.0726, device='cuda:0')",
+        "F1 Palisades after temp scaling": "0.501250983964869",
+        "ECE Palisades after temp scaling": "tensor(0.2398, device='cuda:0')",
+        "T after temp scaling": "1.7496213"
+    }
+}
