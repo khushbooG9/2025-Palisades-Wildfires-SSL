@@ -16,7 +16,19 @@
 # CUDA_VISIBLE_DEVICES=2 PYTHONHASHSEED=41 python3 main.py  --aum_save_dir AUM1 --results_file MM_2 --method_type mixmatch
 # CUDA_VISIBLE_DEVICES=2 PYTHONHASHSEED=42 python3 main.py  --aum_save_dir AUM1 --results_file MM_3 --method_type mixmatch
 
-# experiments for the UST method
-CUDA_VISIBLE_DEVICES=2 PYTHONHASHSEED=40 python3 main.py  --aum_save_dir AUM1 --results_file UST_1 --method_type ust
-CUDA_VISIBLE_DEVICES=2 PYTHONHASHSEED=41 python3 main.py  --aum_save_dir AUM1 --results_file UST_2 --method_type ust
-CUDA_VISIBLE_DEVICES=2 PYTHONHASHSEED=42 python3 main.py  --aum_save_dir AUM1 --results_file UST_3 --method_type ust
+# # experiments for the UST method
+# CUDA_VISIBLE_DEVICES=2 PYTHONHASHSEED=40 python3 main.py  --aum_save_dir AUM1 --results_file UST_1 --method_type ust
+# CUDA_VISIBLE_DEVICES=2 PYTHONHASHSEED=41 python3 main.py  --aum_save_dir AUM1 --results_file UST_2 --method_type ust
+# CUDA_VISIBLE_DEVICES=2 PYTHONHASHSEED=42 python3 main.py  --aum_save_dir AUM1 --results_file UST_3 --method_type ust
+
+# # experiments for AUM-ST method
+# CUDA_VISIBLE_DEVICES=2 PYTHONHASHSEED=40 python3 main.py  --aum_save_dir AUM1 --results_file AUM_ST_1 --method_type aum_st
+# CUDA_VISIBLE_DEVICES=2 PYTHONHASHSEED=41 python3 main.py  --aum_save_dir AUM1 --results_file AUM_ST_2 --method_type aum_st
+# CUDA_VISIBLE_DEVICES=2 PYTHONHASHSEED=42 python3 main.py  --aum_save_dir AUM1 --results_file AUM_ST_3 --method_type aum_st
+
+# experiments for AUM-ST - moex mixup method
+CUDA_VISIBLE_DEVICES=2 PYTHONHASHSEED=40 python3 main.py  --aum_save_dir AUM1 --results_file moex_1 --method_type moex_mixup
+CUDA_VISIBLE_DEVICES=2 PYTHONHASHSEED=41 python3 main.py  --aum_save_dir AUM1 --results_file moex_2 --method_type moex_mixup
+CUDA_VISIBLE_DEVICES=2 PYTHONHASHSEED=42 python3 main.py  --aum_save_dir AUM1 --results_file moex_3 --method_type moex_mixup
+
+

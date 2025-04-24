@@ -12,7 +12,8 @@ import transformers
 
 from transformers import AutoConfig, AutoModelForSequenceClassification, AutoTokenizer
 from custom_dataset import Dataset_tracked
-from train import train_model_supervised, train_model_self_training, train_model_mixmatch, train_model_ust
+from train import train_model_supervised, train_model_self_training, train_model_mixmatch, train_model_ust, train_model_aumst
+from train_moex import train_model_aumst_moex_mixup
 
 
 # logging
@@ -67,7 +68,7 @@ if __name__ == '__main__':
     parser.add_argument("--sample_size", nargs="?", type=int, default=1800, help="number of unlabeled samples for evaluating uncetainty on in each self-training iteration")
     parser.add_argument("--unsup_size", nargs="?", type=int, default=1000, help="number of pseudo-labeled instances drawn from sample_size and used in each self-training iteration")
     parser.add_argument("--sample_scheme", nargs="?", default="easy_bald_class_conf", help="Sampling scheme to use")
-    parser.add_argument("--T", nargs="?", type=int, default=7, help="number of masked models for uncertainty estimation")
+    parser.add_argument("--T", nargs="?", type=int, default=30, help="number of masked models for uncertainty estimation")
     parser.add_argument("--alpha", nargs="?", type=float, default=0.1, help="hyper-parameter for confident training loss")
     parser.add_argument("--sup_epochs", nargs="?", type=int, default=18, help="number of epochs for fine-tuning base model")
     parser.add_argument("--unsup_epochs", nargs="?", type=int, default=12, help="number of self-training iterations")
@@ -134,6 +135,21 @@ if __name__ == '__main__':
          
     elif args["method_type"] == "ust":
         train_model_ust(history_train, history_dev, history_test, palisades_test, palisades_unlabeled,pt_teacher_checkpoint, 
-                                  cfg, unsup_epochs=unsup_epochs, T=30, alpha=0.1, dense_dropout=0.5, 
+                                  cfg, unsup_epochs=unsup_epochs, T=args["T"], alpha=0.1, dense_dropout=0.5, 
                                   sup_batch_size=sup_batch_size, sup_epochs=sup_epochs, 
                                   N_base=N_base, results_file=results_file_name, temp_scaling=temp_scaling, method_type=args["method_type"])
+        
+    elif args["method_type"] == "aum_st":
+        train_model_aumst(history_train, history_dev, history_test, palisades_test, palisades_unlabeled,pt_teacher_checkpoint, 
+                                  cfg, unsup_epochs=unsup_epochs, sup_batch_size=sup_batch_size, sup_epochs=sup_epochs, 
+                                  N_base=N_base, results_file=results_file_name, temp_scaling=temp_scaling, method_type=args["method_type"])
+    
+    elif args["method_type"] == "moex_mixup":
+        train_model_aumst_moex_mixup(history_train, history_dev, history_test, palisades_test, palisades_unlabeled,pt_teacher_checkpoint, 
+                                  cfg, unsup_epochs=unsup_epochs, lam_moex=0.5, sup_batch_size=sup_batch_size, sup_epochs=sup_epochs, 
+                                  N_base=N_base, results_file=results_file_name, temp_scaling=temp_scaling, method_type=args["method_type"])
+        
+    else:
+        print("Invalid method type. Please choose from supervised, self_training, mixmatch, ust, aum_st, moex_mixup")
+        sys.exit(1)
+
